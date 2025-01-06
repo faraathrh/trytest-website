@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Menu & Queue System</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery UI CSS -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <!-- Custom CSS -->
+    <style>
+        /* Global Theme Colors */
+        body {
+            background-color: #fff5d9; /* Pale yellow */
+            color: #9b2d20; /* Beautiful maroon */
+            font-family: 'Roboto', sans-serif;
+        }
+
+        header {
+            background-color: #9b2d20; /* Beautiful maroon */
+            color: #fff5d9; /* Pale yellow */
+            padding: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        header h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+        }
+
+        .btn-primary {
+            background-color: #9b2d20; /* Beautiful maroon */
+            border: none;
+            font-family: 'Roboto', sans-serif;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #7a2316; /* Darker maroon */
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            font-weight: bold;
+            color: #9b2d20; /* Beautiful maroon */
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .section {
+            padding: 50px 0;
+        }
+
+        #stall-status {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .queue-display span {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #28a745;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        footer {
+            background-color: #9b2d20; /* Beautiful maroon */
+            color: #fff5d9; /* Pale yellow */
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Interactive Order Button */
+        .order-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #9b2d20;
+            color: #fff5d9;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-btn:hover {
+            background-color: #7a2316;
+            transform: scale(1.05);
+        }
+
+        .order-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Contact Us & Location Buttons */
+        .contact-location-btns {
+            margin-top: 40px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn-contact-location {
+            font-weight: bold;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-contact-location:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background-color: #f8b400; /* Bright yellow */
+            transition: width 0.3s ease, height 0.3s ease, top 0.3s ease, left 0.3s ease;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .btn-contact-location:hover:before {
+            width: 0;
+            height: 0;
+            top: 50%;
+            left: 50%;
+        }
+
+        .btn-contact-location:hover {
+            background-color: #f8b400; /* Bright yellow */
+            color: #fff;
+            transform: scale(1.1);
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-contact {
+            background-color: #9b2d20; /* Beautiful maroon */
+        }
+
+        .btn-location {
+            background-color: #28a745; /* Green */
+        }
+
+        .btn-contact-location:active {
+            transform: scale(0.98);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .card-title {
+                font-size: 1rem;
+            }
+        }
+    </style>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery UI -->
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <header class="text-center mb-4">
+            <h1 class="display-4">Ayam Gunting dan Burger Celup</h1>
+            <p class="lead">Streamline your scrumptious orders and pickups with ease.</p>
+        </header>
+
+        <!-- Queue System Section -->
+        <section id="stall-status" class="section mb-5 text-center">
+            <h2 class="mb-3">Stall Status</h2>
+            <p>Today's Status: <span id="current-status" class="font-weight-bold">Open</span></p>
+            <h3>Queue Number: <span id="queue-number" class="font-weight-bold">0</span></h3>
+            <button id="next-queue" class="btn btn-primary mt-3">Next Queue</button>
+        </section>
+
+        <!-- Menu Section -->
+        <section id="menu" class="section mb-5">
+            <h2 class="text-center mb-4">Menu</h2>
+            <div class="row">
+                <!-- Cards for menu items -->
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card h-100" data-toggle="modal" data-target="#ayamGuntingModal">
+                        <img src="ayam-gunting.jpg" class="card-img-top" alt="Ayam Gunting">
+                        <div class="card-body">
+                            <h5 class="card-title">Ayam Gunting</h5>
+                            <p class="card-text">Crunchy and delicious fried chicken bites!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card h-100" data-toggle="modal" data-target="#burgerModal">
+                        <img src="burger.jpg" class="card-img-top" alt="Burger">
+                        <div class="card-body">
+                            <h5 class="card-title">Burger</h5>
+                            <p class="card-text">Juicy burgers with your favorite toppings.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card h-100" data-toggle="modal" data-target="#sosejModal">
+                        <img src="sosej-gunting.jpg" class="card-img-top" alt="Sosej Gunting">
+                        <div class="card-body">
+                            <h5 class="card-title">Sosej Gunting</h5>
+                            <p class="card-text">Flavorful sausages coated with crunchy batter.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card h-100" data-toggle="modal" data-target="#ayamSateModal">
+                        <img src="ayam-sate.jpg" class="card-img-top" alt="Ayam Sate">
+                        <div class="card-body">
+                            <h5 class="card-title">Ayam Sate</h5>
+                            <p class="card-text">Succulent crispy chicken skewers with flavourful powder.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Order Button -->
+        <section id="order-now" class="section text-center">
+            <h2>Ready to Order?</h2>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeBqL4NnuZCQeJybZyZp5UmBWd35okMCEkyWMgIycsGDHHoOA/viewform" target="_blank" class="order-btn">
+                Order Now
+            </a>
+        </section>
+
+        <!-- Contact Us & Location Section -->
+        <section class="contact-location-btns">
+            <a href="#" class="btn-contact-location btn-contact" data-toggle="modal" data-target="#contactModal">Contact Us</a>
+            <a href="#" class="btn-contact-location btn-location" data-toggle="modal" data-target="#locationModal">Our Location</a>
+        </section>
+
+        <!-- Modal for Ayam Gunting -->
+        <div class="modal fade" id="ayamGuntingModal" tabindex="-1" role="dialog" aria-labelledby="ayamGuntingModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ayamGuntingModalLabel">Ayam Gunting</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Crunchy and delicious fried chicken bites!</p>
+                        <ul>
+                            <li>Biasa</li>
+                            <li>Pedas</li>
+                            <li>Extra Pedas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Burger -->
+        <div class="modal fade" id="burgerModal" tabindex="-1" role="dialog" aria-labelledby="burgerModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="burgerModalLabel">Burger</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Juicy burgers with your favorite toppings.</p>
+                        <ul>
+                            <li>Benjo</li>
+                            <li>Daging</li>
+                            <li>Ayam</li>
+                            <li>Celup</li>
+                            <li>* Add RM1 for cheese sauce</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Sosej Gunting -->
+        <div class="modal fade" id="sosejModal" tabindex="-1" role="dialog" aria-labelledby="sosejModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="sosejModalLabel">Sosej Gunting</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Flavorful sausages coated with crunchy batter to perfection.</p>
+                        <ul>
+                            <li>Biasa</li>
+                            <li>Pedas</li>
+                            <li>Extra Pedas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Ayam Sate -->
+        <div class="modal fade" id="ayamSateModal" tabindex="-1" role="dialog" aria-labelledby="ayamSateModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ayamSateModalLabel">Ayam Sate</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Succulent crispy chicken skewers with flavourful powder.</p>
+                        <ul>
+                            <li>Biasa</li>
+                            <li>Pedas</li>
+                            <li>Extra Pedas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Contact Us -->
+        <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="contactModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="contactModalLabel">Contact Us</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>For inquiries, please reach out to us:</p>
+                        <ul>
+                            <li>Phone: +60 123 456 789</li>
+                            <li>Email: info@ayamgunting.com</li>
+                            <li>Address: Mahallah Asiah Cafe, University Campus</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for Location -->
+        <div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="locationModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="locationModalLabel">Our Location</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>We are located at:</p>
+                        <div>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15933.486162963176!2d101.7402938!3d3.25754915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc396245b0fe0d%3A0x4d5e44ee1ae51dcb!2sMahallah%20Asiah%20Cafe!5e0!3m2!1sen!2smy!4v1736154190380!5m2!1sen!2smy" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+        <footer>
+            <p>&copy; 2025 Ayam Gunting and Burger Celup. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Queue System JavaScript
+        let queueNumber = 0;
+        const queueDisplay = document.getElementById('queue-number');
+        const nextQueueButton = document.getElementById('next-queue');
+
+        nextQueueButton.addEventListener('click', () => {
+            queueNumber++;
+            queueDisplay.textContent = queueNumber;
+        });
+    </script>
+</body>
+</html>

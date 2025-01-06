@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <style>
+        /* Global Theme Colors */
+        body {
+            background-color: #fff5d9; /* Pale yellow */
+            color: #9b2d20; /* Beautiful maroon */
+            font-family: 'Roboto', sans-serif;
+        }
+
+        header {
+            background-color: #9b2d20; /* Beautiful maroon */
+            color: #fff5d9; /* Pale yellow */
+            padding: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        header h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+        }
+
+        .btn-primary {
+            background-color: #9b2d20; /* Beautiful maroon */
+            border: none;
+            font-family: 'Roboto', sans-serif;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #7a2316; /* Darker maroon */
+        }
+
+        .role-selection {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        /* Button Styling for Customer and Owner */
+        .role-selection .btn {
+            font-size: 1.2rem;
+            padding: 15px 30px;
+            border-radius: 50px;
+            margin: 10px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            color: #fff; /* Set text color to white */
+        }
+
+        .role-selection .btn:hover {
+            background-color: #7a2316;
+            transform: scale(1.05);
+        }
+
+        .login-form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        .login-form h2 {
+            font-size: 1.8rem;
+            color: #9b2d20;
+        }
+
+        .login-form label {
+            font-size: 1rem;
+            color: #9b2d20;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .login-form button {
+            width: 100%;
+            padding: 12px;
+            background-color: #9b2d20;
+            color: #fff;
+            border: none;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-form button:hover {
+            background-color: #7a2316;
+        }
+
+        footer {
+            background-color: #9b2d20; /* Beautiful maroon */
+            color: #fff5d9; /* Pale yellow */
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="text-center">
+            <h1>Welcome to Ayam Gunting Celup</h1>
+            <p>Select your role to continue</p>
+        </header>
+
+        <div class="role-selection">
+            <button id="customer-btn" class="btn btn-primary">Customer</button>
+            <button id="owner-btn" class="btn btn-primary">Owner</button>
+        </div>
+
+        <!-- Hidden Login Form -->
+        <div id="login-form" class="login-form" style="display: none;">
+            <h2>Owner Login</h2>
+            <form id="owner-login">
+                <label for="username">Username:</label>
+                <input type="text" id="username" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" required>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Ayam Gunting dan Burger Celup. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Add fade-in effect on page load
+            $(".container").hide().fadeIn(1000);
+
+            // Button hover effect using jQuery UI
+            $(".btn").button();
+
+            // Customer button action
+            $("#customer-btn").on("click", function () {
+                $("<div>Redirecting to the customer page...</div>").dialog({
+                    modal: true,
+                    title: "Customer",
+                    buttons: {
+                        OK: function () {
+                            $(this).dialog("close");
+                            window.location.href = "project.html";
+                        }
+                    }
+                });
+            });
+
+            // Owner button action
+            $("#owner-btn").on("click", function () {
+                $("#login-form").fadeIn(500);
+            });
+
+            // Owner login form submission
+            $("#owner-login").on("submit", function (e) {
+                e.preventDefault(); // Prevent form from refreshing the page
+                const username = $("#username").val();
+                const password = $("#password").val();
+
+                // Simple authentication (replace with backend logic for real use)
+                if (username === "admin" && password === "password") {
+                    $("<div>Login successful! Redirecting to the owner section...</div>").dialog({
+                        modal: true,
+                        title: "Login Success",
+                        buttons: {
+                            OK: function () {
+                                $(this).dialog("close");
+                                window.location.href = "stall_owner.html";
+                            }
+                        }
+                    });
+                } else {
+                    $("<div>Invalid username or password. Please try again.</div>").dialog({
+                        modal: true,
+                        title: "Login Failed",
+                        buttons: {
+                            Retry: function () {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
